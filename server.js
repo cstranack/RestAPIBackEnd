@@ -2,6 +2,12 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 
+var bodyParser = require('body-parser');
+var cors = require('cors');
+
+var port = 3000;
+
+ 
 //connecting to the database
 //port number for mongodb is 27017
 mongoose.connect('mongodb://localhost:27017/test')
@@ -36,6 +42,6 @@ app.get('/contact', (req, res) => {
 
 
 //listening for requests on port 3000
-app.listen(3000,() => {
+app.listen(port,() => {
     console.log(' Server listening on port 3000 :) ');
 });
