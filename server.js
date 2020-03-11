@@ -1,12 +1,17 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
-
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+var Contact = require('./models/Contact.js');
+
 var port = 3000;
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
  
 //connecting to the database
 //port number for mongodb is 27017
@@ -38,6 +43,27 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
     res.send('This is the contact page :D ');
 
+});
+
+app.post('/api/addContact', (req, res) => {
+    const {name, email, number} = req.body;
+
+    let contact = new Contact({
+        name,
+        email,
+        number
+    });
+
+    contact.save();
+
+    const requestURL = req.get('origin');
+    res.redirect(requestURL);
+});
+
+app.get('/api/getContact', cors(), (req, res) =>{
+    Contact.find({}, (err, docs) =>{
+        res.json(docs);
+    });
 });
 
 
